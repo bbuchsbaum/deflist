@@ -17,6 +17,7 @@ deflist <- function(fun, len=1, names, memoise=FALSE, cache=c("memory", "file"),
   cache <- rlang::arg_match(cache)
   #deferred_list(replicate(len, f))
   v <- vector(mode="list", length=len)
+
   if (!missing(names)) {
     assertthat::assert_that(length(names) == len)
     names(v) <- names
@@ -40,7 +41,7 @@ deflist <- function(fun, len=1, names, memoise=FALSE, cache=c("memory", "file"),
 
   }
 
-  structure(vector(mode="list", length=len), f=fun, len=len, memoised=memoise, cachedir=cachedir, class=c("deflist", "pairlist"))
+  structure(v, f=fun, len=len, memoised=memoise, cachedir=cachedir, class=c("deflist", "pairlist"))
 
 }
 
@@ -70,11 +71,9 @@ as.list.deflist <- function(x,...) {
   #stopifnot(i <= x$len)
   if (is.character(i)) {
     i <- match(i, names(x))
-    if (is.na(i)) {
-      NULL
-    } else {
-      attr(x, "f")(i)
-    }
+    attr(x, "f")(i)
+  } else if (is.na(i)) {
+    NULL
   } else {
     if (!(i <= attr(x, "len") && i > 0)) {
       rlang::abort(message="subscript out of bounds")
@@ -86,10 +85,20 @@ as.list.deflist <- function(x,...) {
 
 #' @keywords internal
 `[.deflist` <- function (x, i)  {
-  #ff <- NextMethod()
-  #lapply(seq_along(i), function(j) x$f(i[j]))
-  f <- attr(x, "f")
-  lapply(seq_along(i), function(j) f(i[j]))
+  if (is.character(i)) {
+    ind <- match(i, names(x))
+    ret <- lapply(ind, function(j) x[[j]])
+    nam <- ifelse(!is.na(ind), ind, "<NA>")
+    names(ret) <- nam
+    ret
+  } else {
+    f <- attr(x, "f")
+    ret <- lapply(seq_along(i), function(j) x[[i[j]]])
+    if (!is.null(names(x))) {
+      names(ret) <- names(x)[i]
+    }
+    ret
+  }
 }
 
 #' @keywords internal
