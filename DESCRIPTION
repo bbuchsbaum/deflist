@@ -1,11 +1,18 @@
 Package: deflist
 Type: Package
-Title: What the Package Does (Title Case)
+Title: A read only list-like object that accesses it's elements via a function
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Bradley Buchsbaum
+Authors@R: person("Bradley", "Buchsbaum", email = "brad.buchsbaum@gmail.com", role = c("aut", "cre"))
+Description: The "deflist" class can be used to model "deferred access" to data or computations by routing indexed list access to a function. 
+    This effect may be useful when one requires sequential list-like access to data but cannot afford to hold all the data in memory at once.
+License: LGPL (>= 2.1)
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+Imports: 
+  purrr,
+  memoise,
+  rlang,
+  assertthat

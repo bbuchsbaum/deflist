@@ -6,9 +6,12 @@
 #' @param len the length of the list
 #' @param names an optional set of names, 1 per element
 #' @param memoise memoise function to speed up repeated element access
+#' @param cache use an in-memory or filesystem cache (if `memoise` is \code{TRUE})
+#' @param cachedir the file path to the cache
 #' @export
 #'
 #' @import memoise
+#' @import assertthat
 deflist <- function(fun, len=1, names, memoise=FALSE, cache=c("memory", "file"), cachedir=NULL) {
   assert_that(is.function(fun))
   cache <- rlang::arg_match(cache)
@@ -25,14 +28,14 @@ deflist <- function(fun, len=1, names, memoise=FALSE, cache=c("memory", "file"),
     } else if (cache == "file") {
       if (is.null(cachedir)) {
         cachedir <- tempdir()
-        cache_filesystem(cachedir)
+        memoise::cache_filesystem(cachedir)
       } else {
-        cache_filesystem(cachedir)
+        memoise::cache_filesystem(cachedir)
       }
 
     }
 
-    fun <- memoise(fun, cache=cc)
+    fun <- memoise::memoise(fun, cache=cc)
     memoise::forget(fun)
 
   }
