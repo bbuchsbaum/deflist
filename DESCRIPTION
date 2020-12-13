@@ -16,3 +16,6 @@ Imports:
   memoise,
   rlang,
   assertthat
+Suggests: 
+    testthat,
+    covr
