@@ -41,7 +41,7 @@ deflist <- function(fun, len=1, names, memoise=FALSE, cache=c("memory", "file"),
 
   }
 
-  structure(v, f=fun, len=len, memoised=memoise, cachedir=cachedir, class=c("deflist", "pairlist"))
+  structure(v, f=fun, len=len, memoised=memoise, cachedir=cachedir, class=c("deflist", "list"))
 
 }
 
