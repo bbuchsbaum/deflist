@@ -7,6 +7,7 @@
 
 [![Travis build
 status](https://travis-ci.com/bbuchsbaum/deflist.svg?branch=master)](https://travis-ci.com/bbuchsbaum/deflist)
+[![R-CMD-check](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of `deflist` is to provide a list-like object for which element
@@ -62,9 +63,9 @@ The value at an index may change across calls, for example:
 ``` r
 dl3 <- deflist(function(i) { rnorm(1) }, len=10)
 print(dl3[[1]])
-#> [1] 0.2870575
+#> [1] -0.3976853
 print(dl3[[1]])
-#> [1] -1.051215
+#> [1] -0.5900208
 ```
 
 Memoisation can be enabled so that values at a given index are cached:
@@ -72,9 +73,9 @@ Memoisation can be enabled so that values at a given index are cached:
 ``` r
 dl4 <- deflist(function(i) { rnorm(1)  }, len=10, memoise=TRUE)
 print(dl4[[1]])
-#> [1] 0.109119
+#> [1] 0.5535047
 print(dl4[[1]])
-#> [1] 0.109119
+#> [1] 0.5535047
 ```
 
 In addition, memoisation can be set to store cached values to the file
@@ -83,9 +84,9 @@ system:
 ``` r
 dl5 <- deflist(function(i) { rnorm(1000)  }, len=10, memoise=TRUE, cache="file", cachedir = tempdir())
 print(dl5[[1]][1:10])
-#>  [1] -0.83066363 -0.45108103 -1.24124034  0.07593257 -2.38128258  0.16619126
-#>  [7]  0.65682800  0.10978826  0.30341646  0.09470068
+#>  [1] -3.05884685  0.77587689  0.08033973  1.47024122  1.65592166  0.92330691
+#>  [7]  0.02819027  0.03387135  0.58879084  0.48323091
 print(dl5[[1]][1:10])
-#>  [1] -0.83066363 -0.45108103 -1.24124034  0.07593257 -2.38128258  0.16619126
-#>  [7]  0.65682800  0.10978826  0.30341646  0.09470068
+#>  [1] -3.05884685  0.77587689  0.08033973  1.47024122  1.65592166  0.92330691
+#>  [7]  0.02819027  0.03387135  0.58879084  0.48323091
 ```
