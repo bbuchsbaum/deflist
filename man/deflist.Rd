@@ -2,7 +2,7 @@
 % Please edit documentation in R/deflist.R
 \name{deflist}
 \alias{deflist}
-\title{create a deferred list}
+\title{Create a deferred list}
 \usage{
 deflist(
   fun,
@@ -14,18 +14,33 @@ deflist(
 )
 }
 \arguments{
-\item{fun}{the function that is used to retrieve elements}
+\item{fun}{A function that is used to retrieve elements.}
 
-\item{len}{the length of the list}
+\item{len}{Integer, the length of the list (default is 1).}
 
-\item{names}{an optional set of names, 1 per element}
+\item{names}{Character vector, an optional set of names, one per element.}
 
-\item{memoise}{memoise function to speed up repeated element access}
+\item{memoise}{Logical, whether to memoise the function to speed up repeated element access (default is FALSE).}
 
-\item{cache}{use an in-memory or filesystem cache (if \code{memoise} is \code{TRUE})}
+\item{cache}{Character, use an in-memory or filesystem cache if \code{memoise} is TRUE (default is "memory").}
 
-\item{cachedir}{the file path to the cache}
+\item{cachedir}{Character, the file path to the cache (default is NULL).}
+}
+\value{
+An object of class "deflist" representing the deferred list.
 }
 \description{
-a read only list that retrieves elements with a function call
+A read-only list that retrieves elements with a function call.
+The deferred list is useful for handling large datasets where elements are computed on-demand.
+}
+\details{
+The deferred list is created using the provided function, length, names, and caching options.
+The list is read-only, and elements are retrieved using the provided function.
+}
+\examples{
+# Create a deferred list of squares
+square_fun <- function(i) i^2
+square_deflist <- deflist(square_fun, len = 5)
+print(square_deflist)
+cat("First element of the list:", square_deflist[[1]], "\n")
 }

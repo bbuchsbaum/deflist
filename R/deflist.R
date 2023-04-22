@@ -1,17 +1,32 @@
-#' create a deferred list
+#' Create a deferred list
 #'
-#' a read only list that retrieves elements with a function call
+#' A read-only list that retrieves elements with a function call.
+#' The deferred list is useful for handling large datasets where elements are computed on-demand.
 #'
-#' @param fun the function that is used to retrieve elements
-#' @param len the length of the list
-#' @param names an optional set of names, 1 per element
-#' @param memoise memoise function to speed up repeated element access
-#' @param cache use an in-memory or filesystem cache (if `memoise` is \code{TRUE})
-#' @param cachedir the file path to the cache
-#' @export
+#' @param fun A function that is used to retrieve elements.
+#' @param len Integer, the length of the list (default is 1).
+#' @param names Character vector, an optional set of names, one per element.
+#' @param memoise Logical, whether to memoise the function to speed up repeated element access (default is FALSE).
+#' @param cache Character, use an in-memory or filesystem cache if `memoise` is TRUE (default is "memory").
+#' @param cachedir Character, the file path to the cache (default is NULL).
+#'
+#' @return An object of class "deflist" representing the deferred list.
+#'
+#' @details The deferred list is created using the provided function, length, names, and caching options.
+#'          The list is read-only, and elements are retrieved using the provided function.
 #'
 #' @import memoise
 #' @import assertthat
+#' @importFrom rlang arg_match
+#' @importFrom purrr map
+#'
+#' @examples
+#' # Create a deferred list of squares
+#' square_fun <- function(i) i^2
+#' square_deflist <- deflist(square_fun, len = 5)
+#' print(square_deflist)
+#' cat("First element of the list:", square_deflist[[1]], "\n")
+#' @export
 deflist <- function(fun, len=1, names, memoise=FALSE, cache=c("memory", "file"), cachedir=NULL) {
   assert_that(is.function(fun))
   cache <- rlang::arg_match(cache)
@@ -56,6 +71,13 @@ print.deflist <- function(x,...) {
   }
 }
 
+#' Convert a deflist object to a list
+#'
+#' @param x A deflist object.
+#' @param ... Additional arguments passed to methods.
+#'
+#' @return A list containing the elements of the deflist object.
+#'
 #' @export
 #' @method as.list deflist
 as.list.deflist <- function(x,...) {
@@ -63,7 +85,13 @@ as.list.deflist <- function(x,...) {
 }
 
 
-#' @keywords internal
+#' Retrieve an element from a deflist object
+#'
+#' @param x A deflist object.
+#' @param i Index or name of the element to be retrieved.
+#'
+#' @return The element at the specified index or name in the deflist object.
+#'
 #' @export
 `[[.deflist` <- function (x, i)  {
   #ff <- NextMethod()
@@ -83,7 +111,32 @@ as.list.deflist <- function(x,...) {
   }
 }
 
-#' @keywords internal
+## old
+# `[.deflist` <- function (x, i)  {
+#   if (is.character(i)) {
+#     ind <- match(i, names(x))
+#     ret <- lapply(ind, function(j) x[[j]])
+#     nam <- ifelse(!is.na(ind), ind, "<NA>")
+#     names(ret) <- nam
+#     ret
+#   } else {
+#     f <- attr(x, "f")
+#     ret <- lapply(seq_along(i), function(j) x[[i[j]]])
+#     if (!is.null(names(x))) {
+#       names(ret) <- names(x)[i]
+#     }
+#     ret
+#   }
+# }
+
+
+#' Subset a deflist object
+#'
+#' @param x A deflist object.
+#' @param i Indices or names of the elements to be retrieved.
+#'
+#' @return A list containing the elements at the specified indices or names in the deflist object.
+#' @export
 `[.deflist` <- function (x, i)  {
   if (is.character(i)) {
     ind <- match(i, names(x))
@@ -101,17 +154,38 @@ as.list.deflist <- function(x,...) {
   }
 }
 
-#' @keywords internal
+
+
+
+#' Prevent assignment to an element in a deflist object
+#'
+#' @param x A deflist object.
+#' @param i Index or name of the element to be assigned.
+#' @param value Value to be assigned to the element.
+#'
+#' @export
 `[[<-.deflist` <- function (x, i, value)  {
   rlang::abort(message="read only list, cannot set elements")
 }
 
-#' @keywords internal
+#' Prevent assignment to elements in a deflist object
+#'
+#' @param x A deflist object.
+#' @param i Indices or names of the elements to be assigned.
+#' @param value Values to be assigned to the elements.
+#'
+#' @export
 `[<-.deflist` <- function (x, i, value)  {
   rlang::abort(message="read only list, cannot set elements")
 }
 
-#' @keywords internal
+
+#' Retrieve the length of a deflist object
+#'
+#' @param x A deflist object.
+#'
+#' @return The length of the deflist object.
+#' @export
 length.deflist <- function (x)  {
   #x$len
   attr(x, "len")
