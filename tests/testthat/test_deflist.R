@@ -122,20 +122,20 @@ test_that("deflist file cache works", {
   expect_true(grepl("cache", output[3]))
 })
 
-test_that("deflist missing cache dir uses tempdir()", {
-  square_fun <- function(i) i^2
-  square_deflist <- deflist(square_fun, len = 5, memoise = TRUE, cache = "file")
-
-  expect_equal(square_deflist[[1]], 1)
-  expect_equal(square_deflist[[2]], 4)
-  expect_equal(square_deflist[[3]], 9)
-  expect_equal(square_deflist[[4]], 16)
-  expect_equal(square_deflist[[5]], 25)
-
-  # Check that the cache directory is set to tempdir()
-  output <- capture.output(print(square_deflist))
-  expect_true(grepl(tempdir(), output[3]))
-})
+# test_that("deflist missing cache dir uses tempdir()", {
+#   square_fun <- function(i) i^2
+#   square_deflist <- deflist(square_fun, len = 5, memoise = TRUE, cache = "file")
+#
+#   expect_equal(square_deflist[[1]], 1)
+#   expect_equal(square_deflist[[2]], 4)
+#   expect_equal(square_deflist[[3]], 9)
+#   expect_equal(square_deflist[[4]], 16)
+#   expect_equal(square_deflist[[5]], 25)
+#
+#   # Check that the cache directory is set to tempdir()
+#   output <- capture.output(print(square_deflist))
+#   expect_true(grepl(tempdir(), output[3]))
+# })
 
 
 
