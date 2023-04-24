@@ -1,7 +1,7 @@
 Package: deflist
 Type: Package
 Title: Deferred List - A Read-Only List-Like Object with Deferred Access
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Bradley", "Buchsbaum", email = "brad.buchsbaum@gmail.com", role = c("aut", "cre"))
 Description: Implements the 'deflist' class, a read-only list-like object that accesses its elements via a function.
     The 'deflist' class can be used to model deferred access to data or computations by routing indexed list access to a function.
