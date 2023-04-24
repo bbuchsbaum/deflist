@@ -25,3 +25,4 @@ Suggests:
     rmarkdown
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://bbuchsbaum.github.io/deflist/
