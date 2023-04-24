@@ -145,7 +145,7 @@ or “file”) and a cache directory for file-based caching.</p>
 <span><span class="co"># Access an element multiple times</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span> <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">)</span> <span class="va">memoised_square_fun</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.107   0.008   0.115</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.099   0.000   0.099</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="converting-to-a-list">Converting to a list<a class="anchor" aria-label="anchor" href="#converting-to-a-list"></a>
