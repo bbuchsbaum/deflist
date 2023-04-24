@@ -8,7 +8,7 @@
 <meta name="description" content="Implements the deflist class, a read-only list-like object that accesses its elements via a function.
     The deflist class can be used to model deferred access to data or computations by routing indexed list access to a function.
     This approach is particularly useful when sequential list-like access to data is required but holding all the data in memory at once is not feasible.
-    The package also provides utilities for memoization and caching to optimize access to frequently requested elements.">
+    The package also provides utilities for memoisation and caching to optimize access to frequently requested elements.">
 <title>Deferred List - A Read-Only List-Like Object with Deferred Access • deflist</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +18,7 @@
 <meta property="og:description" content="Implements the deflist class, a read-only list-like object that accesses its elements via a function.
     The deflist class can be used to model deferred access to data or computations by routing indexed list access to a function.
     This approach is particularly useful when sequential list-like access to data is required but holding all the data in memory at once is not feasible.
-    The package also provides utilities for memoization and caching to optimize access to frequently requested elements.">
+    The package also provides utilities for memoisation and caching to optimize access to frequently requested elements.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -112,25 +112,25 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dl3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deflist.html">deflist</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">}</span>, len<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dl3</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] -0.8829868</span></span>
+<span><span class="co">#&gt; [1] 0.3200255</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dl3</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.2334838</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.3937322</span></span></code></pre></div>
 <p>Memoisation can be enabled so that values at a given index are cached:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dl4</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deflist.html">deflist</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>  <span class="op">}</span>, len<span class="op">=</span><span class="fl">10</span>, memoise<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dl4</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.14986</span></span>
+<span><span class="co">#&gt; [1] 0.1447534</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dl4</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.14986</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1447534</span></span></code></pre></div>
 <p>In addition, memoisation can be set to store cached values to the file system:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dl5</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deflist.html">deflist</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>  <span class="op">}</span>, len<span class="op">=</span><span class="fl">10</span>, memoise<span class="op">=</span><span class="cn">TRUE</span>, cache<span class="op">=</span><span class="st">"file"</span>, cachedir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dl5</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1]  1.0303269  1.6038363  0.6710913  0.4610752 -0.6212213 -0.2649585</span></span>
-<span><span class="co">#&gt;  [7] -1.5652615 -0.6174861  0.2097225 -0.8096926</span></span>
+<span><span class="co">#&gt;  [1]  0.23399448  0.93722807 -0.34288042  0.36736236  0.87024915 -0.86566821</span></span>
+<span><span class="co">#&gt;  [7]  1.57174277 -0.38036486 -0.04497923 -0.34889371</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dl5</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1]  1.0303269  1.6038363  0.6710913  0.4610752 -0.6212213 -0.2649585</span></span>
-<span><span class="co">#&gt;  [7] -1.5652615 -0.6174861  0.2097225 -0.8096926</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1]  0.23399448  0.93722807 -0.34288042  0.36736236  0.87024915 -0.86566821</span></span>
+<span><span class="co">#&gt;  [7]  1.57174277 -0.38036486 -0.04497923 -0.34889371</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
@@ -159,7 +159,6 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.com/bbuchsbaum/deflist" class="external-link"><img src="https://travis-ci.com/bbuchsbaum/deflist.svg?branch=master" alt="Travis build status"></a></li>
 <li><a href="https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
