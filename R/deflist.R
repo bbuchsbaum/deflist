@@ -185,6 +185,11 @@ as.list.deflist <- function(x,...) {
 #' @param x A deflist object.
 #'
 #' @return The length of the deflist object.
+#' @examples
+#' square_fun <- function(i) i^2
+#' square_deflist <- deflist(square_fun, len = 5)
+#' stopifnot(length(square_deflist) == 5)
+#'
 #' @export
 length.deflist <- function (x)  {
   #x$len
