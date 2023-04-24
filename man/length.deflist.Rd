@@ -15,3 +15,9 @@ The length of the deflist object.
 \description{
 Retrieve the length of a deflist object
 }
+\examples{
+square_fun <- function(i) i^2
+square_deflist <- deflist(square_fun, len = 5)
+stopifnot(length(square_deflist) == 5)
+
+}
