@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 # deflist 
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/bbuchsbaum/deflist.svg?branch=master)](https://travis-ci.com/bbuchsbaum/deflist)
 [![R-CMD-check](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
