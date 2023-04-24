@@ -5,8 +5,6 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.com/bbuchsbaum/deflist.svg?branch=master)](https://travis-ci.com/bbuchsbaum/deflist)
 [![R-CMD-check](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -63,9 +61,9 @@ The value at an index may change across calls, for example:
 ``` r
 dl3 <- deflist(function(i) { rnorm(1) }, len=10)
 print(dl3[[1]])
-#> [1] -0.8829868
+#> [1] -0.3898019
 print(dl3[[1]])
-#> [1] 0.2334838
+#> [1] 1.751299
 ```
 
 Memoisation can be enabled so that values at a given index are cached:
@@ -73,9 +71,9 @@ Memoisation can be enabled so that values at a given index are cached:
 ``` r
 dl4 <- deflist(function(i) { rnorm(1)  }, len=10, memoise=TRUE)
 print(dl4[[1]])
-#> [1] 1.14986
+#> [1] 0.7257937
 print(dl4[[1]])
-#> [1] 1.14986
+#> [1] 0.7257937
 ```
 
 In addition, memoisation can be set to store cached values to the file
@@ -84,9 +82,9 @@ system:
 ``` r
 dl5 <- deflist(function(i) { rnorm(1000)  }, len=10, memoise=TRUE, cache="file", cachedir = tempdir())
 print(dl5[[1]][1:10])
-#>  [1]  1.0303269  1.6038363  0.6710913  0.4610752 -0.6212213 -0.2649585
-#>  [7] -1.5652615 -0.6174861  0.2097225 -0.8096926
+#>  [1] -0.75658356  0.63522128 -1.00937512  0.60412713  1.48435539 -0.15420265
+#>  [7]  0.06506608  0.91086488  1.48353613  0.48917266
 print(dl5[[1]][1:10])
-#>  [1]  1.0303269  1.6038363  0.6710913  0.4610752 -0.6212213 -0.2649585
-#>  [7] -1.5652615 -0.6174861  0.2097225 -0.8096926
+#>  [1] -0.75658356  0.63522128 -1.00937512  0.60412713  1.48435539 -0.15420265
+#>  [7]  0.06506608  0.91086488  1.48353613  0.48917266
 ```
