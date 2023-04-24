@@ -61,9 +61,9 @@ The value at an index may change across calls, for example:
 ``` r
 dl3 <- deflist(function(i) { rnorm(1) }, len=10)
 print(dl3[[1]])
-#> [1] -0.3898019
+#> [1] 1.278951
 print(dl3[[1]])
-#> [1] 1.751299
+#> [1] 0.8754219
 ```
 
 Memoisation can be enabled so that values at a given index are cached:
@@ -71,9 +71,9 @@ Memoisation can be enabled so that values at a given index are cached:
 ``` r
 dl4 <- deflist(function(i) { rnorm(1)  }, len=10, memoise=TRUE)
 print(dl4[[1]])
-#> [1] 0.7257937
+#> [1] 0.6059301
 print(dl4[[1]])
-#> [1] 0.7257937
+#> [1] 0.6059301
 ```
 
 In addition, memoisation can be set to store cached values to the file
@@ -82,9 +82,9 @@ system:
 ``` r
 dl5 <- deflist(function(i) { rnorm(1000)  }, len=10, memoise=TRUE, cache="file", cachedir = tempdir())
 print(dl5[[1]][1:10])
-#>  [1] -0.75658356  0.63522128 -1.00937512  0.60412713  1.48435539 -0.15420265
-#>  [7]  0.06506608  0.91086488  1.48353613  0.48917266
+#>  [1] -1.1673550  0.3768089  0.2640071  0.2897236  0.6584535 -1.6609566
+#>  [7]  0.4513948 -0.1364375  0.7639883 -0.5758230
 print(dl5[[1]][1:10])
-#>  [1] -0.75658356  0.63522128 -1.00937512  0.60412713  1.48435539 -0.15420265
-#>  [7]  0.06506608  0.91086488  1.48353613  0.48917266
+#>  [1] -1.1673550  0.3768089  0.2640071  0.2897236  0.6584535 -1.6609566
+#>  [7]  0.4513948 -0.1364375  0.7639883 -0.5758230
 ```
