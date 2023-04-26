@@ -12,7 +12,7 @@
 \item{i}{Indices or names of the elements to be retrieved.}
 }
 \value{
-A list containing the elements at the specified indices or names in the deflist object.
+A list containing the elements at the specified indices or names in the \code{deflist} object.
 }
 \description{
 Subset a deflist object

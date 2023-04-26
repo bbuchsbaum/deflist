@@ -135,7 +135,7 @@ as.list.deflist <- function(x,...) {
 #' @param x A deflist object.
 #' @param i Indices or names of the elements to be retrieved.
 #'
-#' @return A list containing the elements at the specified indices or names in the deflist object.
+#' @return A list containing the elements at the specified indices or names in the \code{deflist} object.
 #' @export
 `[.deflist` <- function (x, i)  {
   if (is.character(i)) {
@@ -163,6 +163,8 @@ as.list.deflist <- function(x,...) {
 #' @param i Index or name of the element to be assigned.
 #' @param value Value to be assigned to the element.
 #'
+#' @return this function throws an error be design, no return value
+#'
 #' @export
 `[[<-.deflist` <- function (x, i, value)  {
   rlang::abort(message="read only list, cannot set elements")
@@ -173,6 +175,8 @@ as.list.deflist <- function(x,...) {
 #' @param x A deflist object.
 #' @param i Indices or names of the elements to be assigned.
 #' @param value Values to be assigned to the elements.
+#'
+#' @return this function throws an error be design, no return value
 #'
 #' @export
 `[<-.deflist` <- function (x, i, value)  {

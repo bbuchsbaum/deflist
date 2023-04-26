@@ -13,6 +13,9 @@
 
 \item{value}{Values to be assigned to the elements.}
 }
+\value{
+this function throws an error be design, no return value
+}
 \description{
 Prevent assignment to elements in a deflist object
 }
