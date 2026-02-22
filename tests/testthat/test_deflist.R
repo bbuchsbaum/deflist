@@ -62,6 +62,29 @@ test_that("deflist named access works", {
   expect_equal(square_deflist[["three"]], 9)
 })
 
+test_that("deflist missing name access with [[ returns NULL", {
+  dl <- deflist(function(i) {
+    if (is.na(i)) {
+      stop("NA should not be passed to retriever")
+    }
+    i
+  }, len = 2, names = c("one", "two"))
+
+  expect_null(dl[["missing"]])
+})
+
+test_that("deflist NA index access with [[ returns NULL", {
+  dl <- deflist(function(i) i, len = 2)
+  expect_null(dl[[NA]])
+})
+
+test_that("deflist constructor validates names length", {
+  expect_error(
+    deflist(function(i) i, len = 2, names = "only-one"),
+    "length\\(names\\) not equal to len"
+  )
+})
+
 test_that("deflist assignment error", {
   square_fun <- function(i) i^2
   square_deflist <- deflist(square_fun, len = 5)
@@ -96,6 +119,19 @@ test_that("deflist as.list works", {
 
   square_list <- as.list(square_deflist)
   expect_equal(square_list, list(1, 4, 9, 16, 25))
+})
+
+test_that("deflist as.list works for empty deflist", {
+  empty_deflist <- deflist(function(i) stop("retriever should not be called"), len = 0)
+  expect_equal(as.list(empty_deflist), list())
+})
+
+test_that("deflist named subsetting preserves names and missing names", {
+  dl <- deflist(function(i) i^2, len = 2, names = c("one", "two"))
+  subset <- dl[c("one", "missing")]
+
+  expect_equal(unname(subset), list(1, NULL))
+  expect_identical(names(subset), c("one", NA_character_))
 })
 
 test_that("deflist print works", {
@@ -136,8 +172,6 @@ test_that("deflist file cache works", {
 #   output <- capture.output(print(square_deflist))
 #   expect_true(grepl(tempdir(), output[3]))
 # })
-
-
 
 
 

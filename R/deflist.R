@@ -81,7 +81,7 @@ print.deflist <- function(x,...) {
 #' @export
 #' @method as.list deflist
 as.list.deflist <- function(x,...) {
-  purrr::map(seq(1,attr(x, "len")), ~ x[[.]])
+  purrr::map(seq_len(attr(x, "len")), ~ x[[.]])
 }
 
 
@@ -99,8 +99,9 @@ as.list.deflist <- function(x,...) {
   #stopifnot(i <= x$len)
   if (is.character(i)) {
     i <- match(i, names(x))
-    attr(x, "f")(i)
-  } else if (is.na(i)) {
+  }
+
+  if (length(i) == 1 && is.na(i)) {
     NULL
   } else {
     if (!(i <= attr(x, "len") && i > 0)) {
@@ -141,11 +142,9 @@ as.list.deflist <- function(x,...) {
   if (is.character(i)) {
     ind <- match(i, names(x))
     ret <- lapply(ind, function(j) x[[j]])
-    nam <- ifelse(!is.na(ind), ind, "<NA>")
-    names(ret) <- nam
+    names(ret) <- names(x)[ind]
     ret
   } else {
-    f <- attr(x, "f")
     ret <- lapply(seq_along(i), function(j) x[[i[j]]])
     if (!is.null(names(x))) {
       names(ret) <- names(x)[i]
@@ -199,4 +198,3 @@ length.deflist <- function (x)  {
   #x$len
   attr(x, "len")
 }
-
