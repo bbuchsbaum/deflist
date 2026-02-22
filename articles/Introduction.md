@@ -1,0 +1,183 @@
+# Introduction
+
+## Introduction
+
+The `deflist` package provides a read-only list-like object that
+retrieves elements with a function call. This is particularly useful for
+handling large datasets where elements are computed on-demand and not
+stored in memory.
+
+In this vignette, we will provide an overview of the main features of
+the `deflist` package and demonstrate its usage with examples.
+
+## Creating a deferred list
+
+To create a deferred list, use the `deflist` function. The key input is
+a function that defines how to access elements in the list. The deferred
+list can also be configured to memoise element access and cache the
+results for faster retrieval.
+
+Let’s create a simple deferred list for square numbers:
+
+``` r
+library(deflist)
+
+square_fun <- function(i) i^2
+square_deflist <- deflist(square_fun, len = 5)
+square_deflist
+#> deflist:  5  elements. 
+#> memoised:  FALSE
+```
+
+## Accessing elements
+
+Elements in a deferred list can be accessed using standard list
+indexing, either by position or by name (if names are provided):
+
+``` r
+# Access by index
+square_deflist[[1]]
+#> [1] 1
+square_deflist[[2]]
+#> [1] 4
+
+# Access multiple elements
+square_deflist[c(1, 3, 5)]
+#> [[1]]
+#> [1] 1
+#> 
+#> [[2]]
+#> [1] 9
+#> 
+#> [[3]]
+#> [1] 25
+```
+
+## Memoisation
+
+Deferred lists can be configured to use memoisation, which caches the
+results of function calls to speed up repeated access to the same
+elements. To enable memoisation, set the memoise argument to TRUE when
+creating the deferred list. You can also specify a cache type (“memory”
+or “file”) and a cache directory for file-based caching.
+
+Here’s an example with memoisation enabled:
+
+``` r
+memoised_square_fun <- deflist(square_fun, len = 5, memoise = TRUE, cache = "memory")
+memoised_square_fun
+#> deflist:  5  elements. 
+#> memoised:  TRUE
+
+# Access an element multiple times
+system.time({ for (i in 1:1000) memoised_square_fun[[1]] })
+#>    user  system elapsed 
+#>   0.098   0.007   0.104
+```
+
+## Converting to a list
+
+A deferred list can be converted to a standard R list using the as.list
+method:
+
+``` r
+
+square_list <- as.list(square_deflist)
+square_list
+#> [[1]]
+#> [1] 1
+#> 
+#> [[2]]
+#> [1] 4
+#> 
+#> [[3]]
+#> [1] 9
+#> 
+#> [[4]]
+#> [1] 16
+#> 
+#> [[5]]
+#> [1] 25
+```
+
+## Read-only protection
+
+Deferred lists are read-only, meaning that you cannot modify their
+elements. Attempting to do so will result in an error:
+
+``` r
+try(square_deflist[[1]] <- 0)
+#> Error in `[[<-`(`*tmp*`, 1, value = 0) : 
+#>   read only list, cannot set elements
+```
+
+## Use Cases
+
+Some potential use cases for deflist include:
+
+**Large datasets**: When working with very large datasets, loading the
+entire dataset into memory might not be feasible. By using deflist, you
+can compute and retrieve elements as needed, saving memory and
+potentially speeding up processing.
+
+**Expensive computations**: When elements of a list are expensive to
+compute, deflist can be used to cache the results, reducing the time
+required to recompute the same element multiple times.
+
+**Dynamic content**: In cases where the content of a list may change
+over time, deflist can be used to ensure that the most up-to-date
+information is always retrieved when an element is accessed.
+
+**API calls**: When working with APIs that have rate limits or require
+significant processing time, deflist can be used to make API calls
+on-demand, avoiding unnecessary calls and reducing the chance of hitting
+rate limits.
+
+**Lazy evaluation**: In situations where you only need a subset of the
+data or elements from a list, deflist allows you to retrieve only the
+required elements, potentially speeding up processing and reducing
+memory usage.
+
+## Caveats
+
+While deflist offers several advantages in certain scenarios, there are
+some potential dangers or caveats that you should be aware of when using
+this data structure:
+
+**Memory management**: Since `deflist` retrieves elements on-demand, it
+can help reduce memory usage in certain scenarios. However, if the
+retrieved elements are not discarded after usage, it could lead to
+increased memory consumption over time. It is essential to manage memory
+carefully when working with deflist.
+
+**Performance**: While deflist can improve performance in cases where
+the entire dataset is not required or when caching is beneficial, it may
+introduce overhead when accessing elements. This overhead could lead to
+slower performance compared to using a standard list if elements are
+accessed frequently or sequentially.
+
+**Complexity**: Using deflist introduces an additional level of
+complexity to your code, which can make it harder to understand,
+maintain, and debug. You should weigh the benefits of using deflist
+against the potential increase in complexity when deciding whether to
+use it.
+
+**Error handling**: If the function used to retrieve elements from the
+deflist encounters an error or fails, you need to handle such cases
+gracefully to avoid breaking your application. This might require
+additional error handling and exception handling in your code.
+
+**Caching and memoization**: If `deflist` is used with memoization, it
+is crucial to consider the implications of caching results. In some
+cases, caching might not be desired, as it can lead to stale or outdated
+results. Additionally, when using file-based caching, you need to ensure
+that the cache directory is managed correctly, which could involve
+handling file I/O errors, managing disk space, and implementing cache
+eviction policies.
+
+## Conclusion
+
+The `deflist` package provides a flexible way to work with large
+datasets that require on-demand computation. It can be easily integrated
+into existing R workflows, making it a valuable tool for a wide range of
+applications.
