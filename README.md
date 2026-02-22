@@ -25,8 +25,8 @@ install.packages("deflist")
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("bbuchsbaum/deflist")
+# install.packages("remotes")
+remotes::install_github("bbuchsbaum/deflist")
 ```
 
 ## Examples
@@ -39,52 +39,51 @@ dl <- deflist(function(i) i, len=10)
 print(dl[[1]])
 #> [1] 1
 
-dl2 <- deflist(function(i) { Sys.sleep(5); i*2  }, len=10)
-
-for (i in 1:10) {
-  print(dl2[[i]])
-}
+calls <- integer()
+dl2 <- deflist(function(i) {
+  calls <<- c(calls, i)
+  i * 2
+}, len = 10)
+print(dl2[[1]])
 #> [1] 2
-#> [1] 4
+print(dl2[[3]])
 #> [1] 6
-#> [1] 8
-#> [1] 10
-#> [1] 12
-#> [1] 14
-#> [1] 16
-#> [1] 18
-#> [1] 20
+print(calls)
+#> [1] 1 3
 ```
 
 The value at an index may change across calls, for example:
 
 ``` r
+set.seed(1)
 dl3 <- deflist(function(i) { rnorm(1) }, len=10)
 print(dl3[[1]])
-#> [1] 0.3200255
+#> [1] -0.6264538
 print(dl3[[1]])
-#> [1] 0.3937322
+#> [1] 0.1836433
 ```
 
 Memoisation can be enabled so that values at a given index are cached:
 
 ``` r
+set.seed(1)
 dl4 <- deflist(function(i) { rnorm(1)  }, len=10, memoise=TRUE)
 print(dl4[[1]])
-#> [1] 0.1447534
+#> [1] -0.6264538
 print(dl4[[1]])
-#> [1] 0.1447534
+#> [1] -0.6264538
 ```
 
 In addition, memoisation can be set to store cached values to the file
 system:
 
 ``` r
+set.seed(1)
 dl5 <- deflist(function(i) { rnorm(1000)  }, len=10, memoise=TRUE, cache="file", cachedir = tempdir())
 print(dl5[[1]][1:10])
-#>  [1]  0.23399448  0.93722807 -0.34288042  0.36736236  0.87024915 -0.86566821
-#>  [7]  1.57174277 -0.38036486 -0.04497923 -0.34889371
+#>  [1] -0.6264538  0.1836433 -0.8356286  1.5952808  0.3295078 -0.8204684
+#>  [7]  0.4874291  0.7383247  0.5757814 -0.3053884
 print(dl5[[1]][1:10])
-#>  [1]  0.23399448  0.93722807 -0.34288042  0.36736236  0.87024915 -0.86566821
-#>  [7]  1.57174277 -0.38036486 -0.04497923 -0.34889371
+#>  [1] -0.6264538  0.1836433 -0.8356286  1.5952808  0.3295078 -0.8204684
+#>  [7]  0.4874291  0.7383247  0.5757814 -0.3053884
 ```
