@@ -6,6 +6,9 @@
 
 ## Citation
 
+Source:
+[`DESCRIPTION`](https://github.com/bbuchsbaum/deflist/blob/main/DESCRIPTION)
+
 Buchsbaum B (2026). *deflist: Deferred List - A Read-Only List-Like
 Object with Deferred Access*. R package version 0.2.2,
 <https://bbuchsbaum.github.io/deflist/>.

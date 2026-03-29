@@ -72,7 +72,7 @@ memoised_square_fun
 # Access an element multiple times
 system.time({ for (i in 1:1000) memoised_square_fun[[1]] })
 #>    user  system elapsed 
-#>   0.102   0.013   0.114
+#>   0.097   0.015   0.112
 ```
 
 ## Converting to a list

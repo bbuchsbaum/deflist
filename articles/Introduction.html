@@ -42,6 +42,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/bbuchsbaum/deflist/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -61,7 +62,7 @@ Buchsbaum</h4>
             
             <h4 data-toc-skip class="date">2026-03-29</h4>
       
-
+      <small class="dont-index">Source: <a href="https://github.com/bbuchsbaum/deflist/blob/main/vignettes/Introduction.Rmd" class="external-link"><code>vignettes/Introduction.Rmd</code></a></small>
       <div class="d-none name"><code>Introduction.Rmd</code></div>
     </div>
 
@@ -136,7 +137,7 @@ or “file”) and a cache directory for file-based caching.</p>
 <span><span class="co"># Access an element multiple times</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span> <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">)</span> <span class="va">memoised_square_fun</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.102   0.013   0.114</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.097   0.015   0.112</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="converting-to-a-list">Converting to a list<a class="anchor" aria-label="anchor" href="#converting-to-a-list"></a>
