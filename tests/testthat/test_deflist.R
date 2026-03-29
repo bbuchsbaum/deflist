@@ -8,7 +8,7 @@ test_that("can create a 1 element deflist", {
   expect_equal(dl[[1]],2)
   expect_error(dl[[2]])
   expect_error(dl[[0]])
-  expect_error(dl[2])
+  expect_equal(dl[2], list(NULL))
 })
 
 test_that("can create a multielement deflist", {
@@ -81,7 +81,34 @@ test_that("deflist NA index access with [[ returns NULL", {
 test_that("deflist constructor validates names length", {
   expect_error(
     deflist(function(i) i, len = 2, names = "only-one"),
-    "length\\(names\\) not equal to len"
+    "character vector with length equal to `len`"
+  )
+
+  expect_error(
+    deflist(function(i) i, len = 2, names = 1:2),
+    "character vector with length equal to `len`"
+  )
+})
+
+test_that("deflist constructor validates length input", {
+  expect_error(
+    deflist(function(i) i, len = 2.7),
+    "single non-negative integer"
+  )
+
+  expect_error(
+    deflist(function(i) i, len = "2"),
+    "single non-negative integer"
+  )
+
+  expect_error(
+    deflist(function(i) i, len = c(2, 3)),
+    "single non-negative integer"
+  )
+
+  expect_error(
+    deflist(function(i) i, len = -1),
+    "single non-negative integer"
   )
 })
 
@@ -98,6 +125,14 @@ test_that("deflist out of bounds error", {
   square_deflist <- deflist(square_fun, len = 5)
 
   expect_error(square_deflist[[6]], "subscript out of bounds")
+})
+
+test_that("deflist double bracket validates scalar whole-number indices", {
+  dl <- deflist(function(i) i, len = 5, names = letters[1:5])
+
+  expect_error(dl[[c(1, 2)]], "`\\[\\[` requires a single index or name")
+  expect_error(dl[[1.5]], "whole-number index or a single name")
+  expect_error(dl[[TRUE]], "whole-number index or a single name")
 })
 
 test_that("deflist memoisation works", {
@@ -126,12 +161,44 @@ test_that("deflist as.list works for empty deflist", {
   expect_equal(as.list(empty_deflist), list())
 })
 
+test_that("deflist as.list preserves names", {
+  dl <- deflist(function(i) i^2, len = 3, names = c("one", "two", "three"))
+
+  expect_identical(
+    as.list(dl),
+    list(one = 1, two = 4, three = 9)
+  )
+})
+
 test_that("deflist named subsetting preserves names and missing names", {
   dl <- deflist(function(i) i^2, len = 2, names = c("one", "two"))
   subset <- dl[c("one", "missing")]
 
   expect_equal(unname(subset), list(1, NULL))
   expect_identical(names(subset), c("one", NA_character_))
+})
+
+test_that("deflist subsetting supports logical, negative, and missing indices", {
+  dl <- deflist(function(i) i^2, len = 5, names = letters[1:5])
+
+  expect_identical(
+    dl[c(TRUE, FALSE, TRUE, FALSE, TRUE)],
+    list(a = 1, c = 9, e = 25)
+  )
+
+  expect_identical(
+    dl[-1],
+    list(b = 4, c = 9, d = 16, e = 25)
+  )
+
+  expect_identical(
+    dl[],
+    list(a = 1, b = 4, c = 9, d = 16, e = 25)
+  )
+
+  missing_subset <- dl[c(1, NA)]
+  expect_equal(unname(missing_subset), list(1, NULL))
+  expect_identical(names(missing_subset), c("a", NA_character_))
 })
 
 test_that("deflist print works", {
@@ -172,7 +239,5 @@ test_that("deflist file cache works", {
 #   output <- capture.output(print(square_deflist))
 #   expect_true(grepl(tempdir(), output[3]))
 # })
-
-
 
 

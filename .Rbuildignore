@@ -3,6 +3,7 @@
 ^LICENSE\.md$
 ^\.travis\.yml$
 ^codecov\.yml$
+^README\.html$
 ^README\.Rmd$
 ^\.github$
 ^_pkgdown\.yml$

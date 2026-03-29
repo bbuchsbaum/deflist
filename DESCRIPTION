@@ -1,7 +1,7 @@
 Package: deflist
 Type: Package
 Title: Deferred List - A Read-Only List-Like Object with Deferred Access
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: person("Bradley", "Buchsbaum", email = "brad.buchsbaum@gmail.com", role = c("aut", "cre"))
 Description: Implements the 'deflist' class, a read-only list-like object that accesses its elements via a function.
     The 'deflist' class can be used to model deferred access to data or computations by routing indexed list access to a function.
@@ -9,14 +9,12 @@ Description: Implements the 'deflist' class, a read-only list-like object that a
     The package also provides utilities for memoisation and caching to optimize access to frequently requested elements.
 License: LGPL (>= 2.1)
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Imports: 
-  purrr,
   memoise,
-  rlang,
-  assertthat
+  rlang
 Suggests: 
     testthat (>= 3.0.0),
     covr,

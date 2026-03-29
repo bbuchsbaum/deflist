@@ -15,11 +15,6 @@
 #' @details The deferred list is created using the provided function, length, names, and caching options.
 #'          The list is read-only, and elements are retrieved using the provided function.
 #'
-#' @import memoise
-#' @import assertthat
-#' @importFrom rlang arg_match
-#' @importFrom purrr map
-#'
 #' @examples
 #' # Create a deferred list of squares
 #' square_fun <- function(i) i^2
@@ -28,36 +23,67 @@
 #' cat("First element of the list:", square_deflist[[1]], "\n")
 #' @export
 deflist <- function(fun, len=1, names, memoise=FALSE, cache=c("memory", "file"), cachedir=NULL) {
-  assert_that(is.function(fun))
+  if (!is.function(fun)) {
+    rlang::abort("`fun` must be a function.")
+  }
+
+  len <- .validate_deflist_length(len)
   cache <- rlang::arg_match(cache)
-  #deferred_list(replicate(len, f))
+
+  if (!.is_single_flag(memoise)) {
+    rlang::abort("`memoise` must be TRUE or FALSE.")
+  }
+
+  if (!is.null(cachedir) && !.is_single_string(cachedir)) {
+    rlang::abort("`cachedir` must be NULL or a single file path.")
+  }
+
   v <- vector(mode="list", length=len)
 
   if (!missing(names)) {
-    assertthat::assert_that(length(names) == len)
+    if (!is.character(names) || length(names) != len) {
+      rlang::abort("`names` must be a character vector with length equal to `len`.")
+    }
     names(v) <- names
   }
 
   if (memoise) {
     cc <- if (cache == "memory") {
-      cache_memory()
-    } else if (cache == "file") {
+      memoise::cache_memory()
+    } else {
       if (is.null(cachedir)) {
         cachedir <- tempdir()
-        memoise::cache_filesystem(cachedir)
-      } else {
-        memoise::cache_filesystem(cachedir)
       }
-
+      memoise::cache_filesystem(cachedir)
     }
 
     fun <- memoise::memoise(fun, cache=cc)
     memoise::forget(fun)
-
   }
 
   structure(v, f=fun, len=len, memoised=memoise, cachedir=cachedir, class=c("deflist", "list"))
+}
 
+.is_single_flag <- function(x) {
+  is.logical(x) && length(x) == 1L && !is.na(x)
+}
+
+.is_single_string <- function(x) {
+  is.character(x) && length(x) == 1L && !is.na(x)
+}
+
+.validate_deflist_length <- function(len) {
+  if (!is.numeric(len) || length(len) != 1L || is.na(len) || len < 0 || len != trunc(len)) {
+    rlang::abort("`len` must be a single non-negative integer.")
+  }
+
+  as.integer(len)
+}
+
+.deflist_index_proxy <- function(x) {
+  indices <- as.list(seq_len(attr(x, "len")))
+  names(indices) <- names(x)
+  indices
 }
 
 
@@ -81,7 +107,8 @@ print.deflist <- function(x,...) {
 #' @export
 #' @method as.list deflist
 as.list.deflist <- function(x,...) {
-  purrr::map(seq_len(attr(x, "len")), ~ x[[.]])
+  f <- attr(x, "f")
+  lapply(.deflist_index_proxy(x), function(i) f(i))
 }
 
 
@@ -94,22 +121,27 @@ as.list.deflist <- function(x,...) {
 #'
 #' @export
 `[[.deflist` <- function (x, i)  {
-  #ff <- NextMethod()
-  #ff(i)
-  #stopifnot(i <= x$len)
+  if (length(i) != 1L) {
+    rlang::abort("`[[` requires a single index or name.")
+  }
+
   if (is.character(i)) {
     i <- match(i, names(x))
   }
 
-  if (length(i) == 1 && is.na(i)) {
-    NULL
-  } else {
-    if (!(i <= attr(x, "len") && i > 0)) {
-      rlang::abort(message="subscript out of bounds")
-    } else {
-        attr(x, "f")(i)
-    }
+  if (is.na(i)) {
+    return(NULL)
   }
+
+  if (!is.numeric(i) || i != trunc(i)) {
+    rlang::abort("`[[` requires a whole-number index or a single name.")
+  }
+
+  if (!(i <= attr(x, "len") && i > 0)) {
+    rlang::abort(message="subscript out of bounds")
+  }
+
+  attr(x, "f")(as.integer(i))
 }
 
 ## old
@@ -139,18 +171,18 @@ as.list.deflist <- function(x,...) {
 #' @return A list containing the elements at the specified indices or names in the \code{deflist} object.
 #' @export
 `[.deflist` <- function (x, i)  {
-  if (is.character(i)) {
-    ind <- match(i, names(x))
-    ret <- lapply(ind, function(j) x[[j]])
-    names(ret) <- names(x)[ind]
-    ret
-  } else {
-    ret <- lapply(seq_along(i), function(j) x[[i[j]]])
-    if (!is.null(names(x))) {
-      names(ret) <- names(x)[i]
-    }
-    ret
+  if (missing(i)) {
+    return(as.list(x))
   }
+
+  f <- attr(x, "f")
+  lapply(.deflist_index_proxy(x)[i], function(j) {
+    if (is.null(j)) {
+      NULL
+    } else {
+      f(j)
+    }
+  })
 }
 
 
