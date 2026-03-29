@@ -15,11 +15,13 @@ RoxygenNote: 7.3.3
 Imports: 
   memoise,
   rlang
-Suggests: 
+Suggests:
     testthat (>= 3.0.0),
     covr,
     knitr,
+    pkgdown,
     rmarkdown
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://bbuchsbaum.github.io/deflist/
+URL: https://bbuchsbaum.github.io/deflist/, https://github.com/bbuchsbaum/deflist
+BugReports: https://github.com/bbuchsbaum/deflist/issues

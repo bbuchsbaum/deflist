@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/bbuchsbaum/deflist/actions/workflows/pkgdown.yaml/badge.svg)](https://bbuchsbaum.github.io/deflist/)
 <!-- badges: end -->
 
 The goal of `deflist` is to provide a list-like object for which element
