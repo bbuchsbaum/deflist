@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">deflist</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,6 +35,14 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.2" id="deflist-022">deflist 0.2.2<a class="anchor" aria-label="anchor" href="#deflist-022"></a></h2>
+<ul><li>Harden <code><a href="../reference/deflist.html">deflist()</a></code> input validation so invalid lengths and malformed constructor arguments fail early.</li>
+<li>Align deferred-list subsetting more closely with base list behavior for logical, negative, missing, and <code>NA</code> indices.</li>
+<li>Tighten <code>[[.deflist</code> index validation to reject non-scalar and non-integer numeric inputs with clearer errors.</li>
+<li>Rework <code><a href="../reference/as.list.deflist.html">as.list.deflist()</a></code> to preserve names while reducing allocation and dependency overhead.</li>
+<li>Drop unused imports and ignore generated <code>README.html</code> during package builds.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="deflist-021">deflist 0.2.1<a class="anchor" aria-label="anchor" href="#deflist-021"></a></h2>
 <ul><li>Fix <code>[[.deflist</code> to return <code>NULL</code> for missing names and <code>NA</code> indices without calling the retrieval function.</li>

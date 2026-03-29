@@ -1,5 +1,21 @@
 # Changelog
 
+## deflist 0.2.2
+
+- Harden
+  [`deflist()`](https://bbuchsbaum.github.io/deflist/reference/deflist.md)
+  input validation so invalid lengths and malformed constructor
+  arguments fail early.
+- Align deferred-list subsetting more closely with base list behavior
+  for logical, negative, missing, and `NA` indices.
+- Tighten `[[.deflist` index validation to reject non-scalar and
+  non-integer numeric inputs with clearer errors.
+- Rework
+  [`as.list.deflist()`](https://bbuchsbaum.github.io/deflist/reference/as.list.deflist.md)
+  to preserve names while reducing allocation and dependency overhead.
+- Drop unused imports and ignore generated `README.html` during package
+  builds.
+
 ## deflist 0.2.1
 
 - Fix `[[.deflist` to return `NULL` for missing names and `NA` indices
