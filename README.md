@@ -7,6 +7,8 @@
 
 [![R-CMD-check](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bbuchsbaum/deflist/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/bbuchsbaum/deflist/actions/workflows/pkgdown.yaml/badge.svg)](https://bbuchsbaum.github.io/deflist/)
+[![test-coverage](https://github.com/bbuchsbaum/deflist/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/bbuchsbaum/deflist/actions/workflows/test-coverage.yaml)
+[![Codecov test coverage](https://codecov.io/gh/bbuchsbaum/deflist/branch/main/graph/badge.svg)](https://app.codecov.io/gh/bbuchsbaum/deflist?branch=main)
 <!-- badges: end -->
 
 The goal of `deflist` is to provide a list-like object for which element
